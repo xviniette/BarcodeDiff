@@ -10,13 +10,12 @@
                 <div v-for="barcode of barcodes" class="flex-grow flex justify-center items-center text-3xl font-bold">{{barcode}}</div>
             </div>
             <div class="w-full fixed bottom-4 flex justify-center">
-                <button
+                <div
                     @click="reset"
-                    type="button"
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-4xl px-10 py-5 text-center"
                 >
                     Reset
-                </button>
+                </div>
             </div>
         </div>
         <script>
