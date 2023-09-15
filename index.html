@@ -1,0 +1,67 @@
+<html>
+    <head>
+        <title>Barcode diff</title>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body>
+        <div id="app">
+            <div class="w-full h-screen flex" :class="{'bg-red-200':!isSame, 'bg-green-200':isSame, 'bg-white':barcodes.length < 2}">
+                <div v-for="barcode of barcodes" class="flex-grow flex justify-center items-center text-3xl font-bold">{{barcode}}</div>
+            </div>
+            <div class="w-full fixed bottom-4 flex justify-center">
+                <button
+                    @click="reset"
+                    type="button"
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-4xl px-10 py-5 text-center"
+                >
+                    Reset
+                </button>
+            </div>
+        </div>
+        <script>
+            window.onload = () => {
+                new Vue({
+                    el: "#app",
+                    data: {
+                        barcodes: [],
+                    },
+                    methods: {
+                        addBarcode(code) {
+                            this.barcodes.push(code)
+                        },
+                        reset() {
+                            this.barcodes = []
+                        },
+                    },
+                    computed: {
+                        isSame() {
+                            for (let i = 1; i < this.barcodes.length; i++) {
+                                if (this.barcodes[i] != this.barcodes[i - 1]) return false
+                            }
+
+                            return true
+                        },
+                    },
+                    mounted() {
+                        const onBarcode = (cb = () => {}) => {
+                            let code = ""
+
+                            document.addEventListener("keydown", e => {
+                                const key = e.key
+                                if (key == "Enter") {
+                                    cb(code)
+                                    code = ""
+                                } else if (key != "Shift") {
+                                    code += key
+                                }
+                            })
+                        }
+
+                        onBarcode(code => this.addBarcode(code))
+                    },
+                })
+            }
+        </script>
+    </body>
+</html>
